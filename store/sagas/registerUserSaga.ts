@@ -18,7 +18,7 @@ export function* registerUserWorker({ payload }: RegisterUser) {
             body: JSON.stringify(payload),
         });
         // @ts-ignore
-        const data = yield res.json();
+        // const data = yield res.json();
         // yield put(setCurrentUser({ currentUser: data }));
         yield call(Router.push, Routes.LOGIN);
 

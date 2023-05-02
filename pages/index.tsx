@@ -6,6 +6,8 @@ import { Form } from '~/components/Form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser, getDeals } from '~/store/selectors/userSelector';
 import { fetchDealsAction } from '~/store/sagas/sagasActions/actions/fetchDeals';
+import { updateDealAction } from '~/store/sagas/sagasActions/actions/updateDeal';
+import { removeDealAction } from '~/store/sagas/sagasActions/actions/removeDeal';
 
 export enum Routes {
     HOME = '/',
@@ -18,6 +20,8 @@ export enum Routes {
 
 export default function Home() {
     const [item, setItem] = useState('');
+    const [editedDeal, setEditedDeal] = useState('');
+    const [editMode, setEditMode] = useState('');
 
     const deals = useSelector(getDeals);
     const currentUser = useSelector(getCurrentUser);
@@ -27,6 +31,16 @@ export default function Home() {
     useEffect(() => {
         dispatch(fetchDealsAction());
     }, []);
+
+    const removeDealPress = (title: string) => async () => {
+        dispatch(removeDealAction({ title }));
+    };
+
+    const updateDealPress = (newTitle: string, oldTitle: string) => async () => {
+        console.log('newTitle', newTitle);
+        dispatch(updateDealAction({ newTitle, oldTitle }));
+        setEditMode('');
+    };
 
     return (
         <>
@@ -64,7 +78,13 @@ export default function Home() {
                         <span>List</span>
                         <ol>
                             {deals.map((el, index) => (
-                                <div key={el}>
+                                <div
+                                    key={el}
+                                    onDoubleClick={() => {
+                                        setEditMode(el);
+                                        setEditedDeal(el);
+                                    }}
+                                >
                                     <li
                                         style={{
                                             paddingTop: '10px',
@@ -75,11 +95,25 @@ export default function Home() {
                                             alignItems: 'center',
                                         }}
                                     >
-                                        <p>
-                                            {index + 1} {'. '}
-                                            {el}
-                                        </p>
-                                        <button onClick={() => console.log('el', el)}>x</button>
+                                        {editMode === el ? (
+                                            <textarea
+                                                value={editedDeal}
+                                                onChange={(e) => setEditedDeal(e.target.value)}
+                                            />
+                                        ) : (
+                                            <p>
+                                                {index + 1} {'. '}
+                                                {el}
+                                            </p>
+                                        )}
+
+                                        <button
+                                            onClick={
+                                                editMode === el ? updateDealPress(editedDeal, el) : removeDealPress(el)
+                                            }
+                                        >
+                                            {editMode === el ? 'save' : 'x'}
+                                        </button>
                                     </li>
                                 </div>
                             ))}

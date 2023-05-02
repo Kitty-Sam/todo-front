@@ -4,4 +4,7 @@ export const FETCH_DEALS = 'FETCH_DEALS';
 export const REGISTER_USER = 'REGISTER_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const ADD_FRIEND = 'ADD_FRIEND';
+export const ADD_DEAL = 'ADD_DEAL';
+export const REMOVE_DEAL = 'REMOVE_DEAL';
+export const UPDATE_DEAL = 'UPDATE_DEAL';
 export const REMOVE_FRIEND = 'REMOVE_FRIEND';
