@@ -2,49 +2,37 @@ import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
 import Router from 'next/router';
 import { Routes } from '~/pages/index';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getFriends } from '~/store/selectors/userSelector';
+import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFriends';
 
 const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml0ZW1AZ21haWwuY29tIiwibmFtZSI6Iml0ZW0iLCJpYXQiOjE2ODMwMjkyMTAsImV4cCI6MTY4MzExNTYxMH0.xgt2oOE_q7YSyYULdG_KifQGXqtrwG-Fqxd_zYAetzw';
 const Friends = () => {
-    const [friends, setFriends] = useState<null | string[]>(null);
+    const friends = useSelector(getFriends, shallowEqual);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const callAPI = async () => {
-            try {
-                const res = await fetch(`http://localhost:4000/user/friends`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                const data = await res.json();
-                setFriends(data);
-                console.log(data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        callAPI();
+        dispatch(fetchFriendsAction());
     }, []);
-    const removeFriend = async (value: string) => {
-        try {
-            const res = await fetch(`http://localhost:4000/user/remove-friend`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: value }),
-            });
-            const data = await res.json();
-            setFriends(data);
-            console.log('data after remove', data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    // const removeFriend = async (value: string) => {
+    //     try {
+    //         const res = await fetch(`http://localhost:4000/user/remove-friend`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ email: value }),
+    //         });
+    //         const data = await res.json();
+    //         setFriends(data);
+    //         console.log('data after remove', data);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     return (
         <MainLayout>
@@ -55,7 +43,7 @@ const Friends = () => {
                 </button>
             </div>
 
-            {friends && (
+            {friends.length && (
                 <ol>
                     {friends.map((el, index) => (
                         <div key={el}>
@@ -73,7 +61,7 @@ const Friends = () => {
                                     {index + 1} {'. '}
                                     {el}
                                 </p>
-                                <button onClick={() => removeFriend(el)}>unfollow</button>
+                                {/*<button onClick={() => removeFriend(el)}>unfollow</button>*/}
                             </li>
                         </div>
                     ))}

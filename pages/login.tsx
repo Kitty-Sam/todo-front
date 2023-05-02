@@ -4,10 +4,22 @@ import Router from 'next/router';
 import { Routes } from '~/pages/index';
 import { Input } from '~/components/Input';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const dispatch = useDispatch();
+
+    const loginPress = () => {
+        const payload = {
+            email,
+            password,
+        };
+        dispatch(loginAction(payload));
+    };
 
     return (
         <MainLayout>
@@ -25,7 +37,7 @@ const Login = () => {
                     onChange={(e: any) => setPassword(e.target.value)}
                 />
                 <div>
-                    <button className={styles.btn} onClick={() => console.log('login')}>
+                    <button className={styles.btn} onClick={loginPress}>
                         login
                     </button>
                 </div>

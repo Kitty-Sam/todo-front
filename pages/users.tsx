@@ -4,64 +4,36 @@ import { useRouter } from 'next/router';
 import { Routes } from '~/pages/index';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { IUser } from '~/store/reducers/authReducer';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getAllUsers } from '~/store/selectors/userSelector';
+import { fetchAllUsersAction } from '~/store/sagas/sagasActions/actions/fetchAllUsers';
 
-export interface IUser {
-    id: string;
-    name: string;
-    email: string;
-    deals: string[];
-    friends: string[];
-}
-
-const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml0ZW1AZ21haWwuY29tIiwibmFtZSI6Iml0ZW0iLCJpYXQiOjE2ODMwMjkyMTAsImV4cCI6MTY4MzExNTYxMH0.xgt2oOE_q7YSyYULdG_KifQGXqtrwG-Fqxd_zYAetzw';
 const Users = () => {
-    // const { push } = useRouter();
-    const [users, setUsers] = useState<null | IUser[]>(null);
+    const users = useSelector(getAllUsers, shallowEqual);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const callAPI = async () => {
-            try {
-                const res = await fetch(`http://localhost:4000/user/users`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                const data = await res.json();
-                const normalizeData: IUser[] = data.map((el: any) => ({
-                    id: el._id,
-                    name: el.name,
-                    email: el.email,
-                    deals: el.deals,
-                    friends: el.friends,
-                }));
-                setUsers(normalizeData);
-                console.log(data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        callAPI();
+        dispatch(fetchAllUsersAction());
     }, []);
 
-    const addFriend = async (value: string) => {
-        try {
-            const res = await fetch(`http://localhost:4000/user/add-friend`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: value }),
-            });
-            const data = await res.json();
-            console.log('data after add', data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    // const addFriend = async (value: string) => {
+    //     try {
+    //         const res = await fetch(`http://localhost:4000/user/add-friend`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ email: value }),
+    //         });
+    //         const data = await res.json();
+    //         console.log('data after add', data);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     return (
         <MainLayout>
@@ -69,7 +41,7 @@ const Users = () => {
                 <h2 className={styles.header}>Users</h2>
                 <Link href={Routes.HOME}>home</Link>
             </div>
-            {users && (
+            {users.length && (
                 <ol>
                     {users.map((el, index) => (
                         <div key={el.name}>
@@ -87,7 +59,7 @@ const Users = () => {
                                     {index + 1} {'. '}
                                     {el.name}
                                 </p>
-                                <button onClick={() => addFriend(el.email)}>follow</button>
+                                {/*<button onClick={() => addFriend(el.email)}>follow</button>*/}
                             </li>
                         </div>
                     ))}
