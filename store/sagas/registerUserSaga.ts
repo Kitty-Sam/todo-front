@@ -1,5 +1,5 @@
 import { call, put } from '@redux-saga/core/effects';
-import { setAppStatus, setCurrentUser } from '~/store/actions/actions';
+import { setAppStatus } from '~/store/actions/actions';
 import { RequestStatus } from '~/store/reducers/appReducer';
 import { RegisterUser } from '~/store/sagas/sagasActions/actions/registerUser';
 import Router from 'next/router';
@@ -19,7 +19,7 @@ export function* registerUserWorker({ payload }: RegisterUser) {
         });
         // @ts-ignore
         const data = yield res.json();
-        yield put(setCurrentUser({ currentUser: data }));
+        // yield put(setCurrentUser({ currentUser: data }));
         yield call(Router.push, Routes.LOGIN);
 
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));

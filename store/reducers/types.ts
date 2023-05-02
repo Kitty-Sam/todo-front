@@ -51,11 +51,11 @@ export interface SetAllUsersPayload {
 }
 
 export interface SetFriendsPayload {
-    friends: [];
+    friends: string[];
 }
 
 export interface SetDealsPayload {
-    deals: [];
+    deals: string[];
 }
 
 export type SetAllUsers = {

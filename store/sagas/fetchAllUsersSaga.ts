@@ -1,7 +1,7 @@
 import { put, select } from '@redux-saga/core/effects';
 import { setAllUsers, setAppStatus } from '~/store/actions/actions';
 import { RequestStatus } from '~/store/reducers/appReducer';
-import { getCurrentUser } from '~/store/selectors/userSelector';
+import { getCurrentUserEmail } from '~/store/selectors/userSelector';
 import { IUser } from '~/store/reducers/authReducer';
 
 export function* fetchAllUsersWorker() {
@@ -12,7 +12,7 @@ export function* fetchAllUsersWorker() {
 
         console.log('token from fetch users', token);
 
-        const currentUserEmail: string = yield select(getCurrentUser);
+        const currentUserEmail: string = yield select(getCurrentUserEmail);
 
         // @ts-ignore
         const res = yield fetch(`http://localhost:4000/user/users`, {

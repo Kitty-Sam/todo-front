@@ -1,8 +1,11 @@
 import styles from '~/styles/Home.module.css';
 import Router from 'next/router';
 import { MainLayout } from '~/components/MainLayout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from '~/components/Form';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser, getDeals } from '~/store/selectors/userSelector';
+import { fetchDealsAction } from '~/store/sagas/sagasActions/actions/fetchDeals';
 
 export enum Routes {
     HOME = '/',
@@ -13,10 +16,17 @@ export enum Routes {
     LOGIN = '/login',
 }
 
-const list = ['buy apple', 'clean room', 'fix broken table', 'play with dog'];
-
 export default function Home() {
     const [item, setItem] = useState('');
+
+    const deals = useSelector(getDeals);
+    const currentUser = useSelector(getCurrentUser);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchDealsAction());
+    }, []);
 
     return (
         <>
@@ -43,8 +53,8 @@ export default function Home() {
                         </div>
                         <div>
                             <span>Personal info</span>
-                            <p>user name: test</p>
-                            <p>email: test@gmail.com</p>
+                            <p>user name: {currentUser.name}</p>
+                            <p>email: {currentUser.email}</p>
                         </div>
 
                         <span>Create new item</span>
@@ -53,7 +63,7 @@ export default function Home() {
 
                         <span>List</span>
                         <ol>
-                            {list.map((el, index) => (
+                            {deals.map((el, index) => (
                                 <div key={el}>
                                     <li
                                         style={{

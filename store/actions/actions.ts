@@ -5,9 +5,9 @@ import {
     SetAppErrorPayload,
     SetAppStatusPayload,
     SetCurrentUserPayload,
+    SetDealsPayload,
     SetFriendsPayload,
     SetIsLoggedPayload,
-    SetTokenPayload,
 } from '../reducers/types';
 import { AppActions, AuthActions, UserActions } from './actionsTypes';
 
@@ -27,11 +27,6 @@ export const setIsLogged = (payload: SetIsLoggedPayload) => ({
     payload,
 });
 
-export const setToken = (payload: SetTokenPayload) => ({
-    type: AuthActions.SET_TOKEN,
-    payload,
-});
-
 export const setCurrentUser = (payload: SetCurrentUserPayload) => ({
     type: AuthActions.SET_CURRENT_USER,
     payload,
@@ -46,5 +41,10 @@ export const setAllUsers = (payload: SetAllUsersPayload) => ({
 
 export const setFriends = (payload: SetFriendsPayload) => ({
     type: UserActions.FETCH_FRIENDS,
+    payload,
+});
+
+export const setDeals = (payload: SetDealsPayload) => ({
+    type: UserActions.FETCH_DEALS,
     payload,
 });

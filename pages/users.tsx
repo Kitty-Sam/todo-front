@@ -1,39 +1,33 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
-import { useRouter } from 'next/router';
 import { Routes } from '~/pages/index';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { IUser } from '~/store/reducers/authReducer';
+import { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { getAllUsers } from '~/store/selectors/userSelector';
+import { getAllUsers, getFriends } from '~/store/selectors/userSelector';
 import { fetchAllUsersAction } from '~/store/sagas/sagasActions/actions/fetchAllUsers';
+import { addFriendAction } from '~/store/sagas/sagasActions/actions/addFriend';
+import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFriends';
+import { removeFriendAction } from '~/store/sagas/sagasActions/actions/removeFriend';
 
 const Users = () => {
     const users = useSelector(getAllUsers, shallowEqual);
+    const friends = useSelector(getFriends, shallowEqual);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchAllUsersAction());
+        dispatch(fetchFriendsAction());
     }, []);
 
-    // const addFriend = async (value: string) => {
-    //     try {
-    //         const res = await fetch(`http://localhost:4000/user/add-friend`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ email: value }),
-    //         });
-    //         const data = await res.json();
-    //         console.log('data after add', data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
+    const addFriendPress = (email: string) => async () => {
+        dispatch(addFriendAction({ email }));
+    };
+
+    const removeFriendPress = (email: string) => async () => {
+        dispatch(removeFriendAction({ email }));
+    };
 
     return (
         <MainLayout>
@@ -59,7 +53,15 @@ const Users = () => {
                                     {index + 1} {'. '}
                                     {el.name}
                                 </p>
-                                {/*<button onClick={() => addFriend(el.email)}>follow</button>*/}
+                                <button
+                                    onClick={
+                                        friends.includes(el.email)
+                                            ? removeFriendPress(el.email)
+                                            : addFriendPress(el.email)
+                                    }
+                                >
+                                    {friends.includes(el.email) ? 'unfollow' : 'follow'}
+                                </button>
                             </li>
                         </div>
                     ))}

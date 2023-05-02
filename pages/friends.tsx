@@ -6,9 +6,8 @@ import { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getFriends } from '~/store/selectors/userSelector';
 import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFriends';
+import { removeFriendAction } from '~/store/sagas/sagasActions/actions/removeFriend';
 
-const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml0ZW1AZ21haWwuY29tIiwibmFtZSI6Iml0ZW0iLCJpYXQiOjE2ODMwMjkyMTAsImV4cCI6MTY4MzExNTYxMH0.xgt2oOE_q7YSyYULdG_KifQGXqtrwG-Fqxd_zYAetzw';
 const Friends = () => {
     const friends = useSelector(getFriends, shallowEqual);
     const dispatch = useDispatch();
@@ -16,23 +15,9 @@ const Friends = () => {
     useEffect(() => {
         dispatch(fetchFriendsAction());
     }, []);
-    // const removeFriend = async (value: string) => {
-    //     try {
-    //         const res = await fetch(`http://localhost:4000/user/remove-friend`, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ email: value }),
-    //         });
-    //         const data = await res.json();
-    //         setFriends(data);
-    //         console.log('data after remove', data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
+    const removeFriendPress = (email: string) => async () => {
+        dispatch(removeFriendAction({ email }));
+    };
 
     return (
         <MainLayout>
@@ -61,7 +46,7 @@ const Friends = () => {
                                     {index + 1} {'. '}
                                     {el}
                                 </p>
-                                {/*<button onClick={() => removeFriend(el)}>unfollow</button>*/}
+                                <button onClick={removeFriendPress(el)}>unfollow</button>
                             </li>
                         </div>
                     ))}
