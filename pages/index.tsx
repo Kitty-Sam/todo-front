@@ -3,17 +3,19 @@ import Router from 'next/router';
 import { MainLayout } from '~/components/MainLayout';
 import { useEffect, useState } from 'react';
 import { Form } from '~/components/Form';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUser, getDeals } from '~/store/selectors/userSelector';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser, getDeals, getIsLogged } from '~/store/selectors/userSelector';
 import { fetchDealsAction } from '~/store/sagas/sagasActions/actions/fetchDeals';
 import { updateDealAction } from '~/store/sagas/sagasActions/actions/updateDeal';
 import { removeDealAction } from '~/store/sagas/sagasActions/actions/removeDeal';
+import { checkTokenAction } from '~/store/sagas/sagasActions/actions/checkToken';
+import { PersonalInfo } from '~/components/PersonalInfo';
 
 export enum Routes {
     HOME = '/',
     FRIENDS = '/friends',
     USERS = '/users',
-    FRIEND_PROFILE = '/friendProfile',
+    FRIEND_PROFILE = '/friend',
     REGISTER = '/register',
     LOGIN = '/login',
 }
@@ -23,13 +25,15 @@ export default function Home() {
     const [editedDeal, setEditedDeal] = useState('');
     const [editMode, setEditMode] = useState('');
 
-    const deals = useSelector(getDeals);
-    const currentUser = useSelector(getCurrentUser);
+    const deals = useSelector(getDeals, shallowEqual);
+    const isLogged = useSelector(getIsLogged);
+    const currentUser = useSelector(getCurrentUser, shallowEqual);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchDealsAction());
+        dispatch(checkTokenAction());
     }, []);
 
     const removeDealPress = (title: string) => async () => {
@@ -37,7 +41,6 @@ export default function Home() {
     };
 
     const updateDealPress = (newTitle: string, oldTitle: string) => async () => {
-        console.log('newTitle', newTitle);
         dispatch(updateDealAction({ newTitle, oldTitle }));
         setEditMode('');
     };
@@ -46,79 +49,87 @@ export default function Home() {
         <>
             <MainLayout>
                 <div className={styles.mainContent}>
-                    <div className={styles.text}>
-                        <h1>List of good things</h1>
-                        <div className={styles.buttonsContainer}>
-                            <button className={styles.btn} onClick={() => Router.push(Routes.FRIENDS)}>
-                                friends
-                            </button>
-                            <button className={styles.btn} onClick={() => Router.push(Routes.USERS)}>
-                                all users
-                            </button>
-                            <button className={styles.btn} onClick={() => Router.push(Routes.LOGIN)}>
-                                login
-                            </button>
-                            <button className={styles.btn} onClick={() => Router.push(Routes.REGISTER)}>
-                                register
-                            </button>
-                            <button className={styles.btn} onClick={() => Router.push(Routes.FRIEND_PROFILE)}>
-                                friend profile
-                            </button>
+                    {!isLogged ? (
+                        <div className={styles.text}>
+                            <h1>List of good things</h1>
+                            <div className={styles.buttonsContainer}>
+                                {/*<Link href={Routes.LOGIN}>login</Link>*/}
+                                {/*<Link href={Routes.REGISTER}>register</Link>*/}
+                                <button className={styles.btn} onClick={() => Router.push(Routes.LOGIN)}>
+                                    login
+                                </button>
+                                <button className={styles.btn} onClick={() => Router.push(Routes.REGISTER)}>
+                                    register
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <span>Personal info</span>
-                            <p>user name: {currentUser.name}</p>
-                            <p>email: {currentUser.email}</p>
-                        </div>
+                    ) : (
+                        <div className={styles.text}>
+                            <h1>List of good things</h1>
+                            <div className={styles.buttonsContainer}>
+                                <button className={styles.btn} onClick={() => Router.push(Routes.FRIENDS)}>
+                                    friends
+                                </button>
+                                <button className={styles.btn} onClick={() => Router.push(Routes.USERS)}>
+                                    all users
+                                </button>
+                            </div>
+                            <PersonalInfo />
+                            <span>Create new item</span>
 
-                        <span>Create new item</span>
+                            <Form item={item} setItem={setItem} />
 
-                        <Form item={item} setItem={setItem} />
-
-                        <span>List</span>
-                        <ol>
-                            {deals.map((el, index) => (
-                                <div
-                                    key={el}
-                                    onDoubleClick={() => {
-                                        setEditMode(el);
-                                        setEditedDeal(el);
-                                    }}
-                                >
-                                    <li
-                                        style={{
-                                            paddingTop: '10px',
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            width: '200px',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        {editMode === el ? (
-                                            <textarea
-                                                value={editedDeal}
-                                                onChange={(e) => setEditedDeal(e.target.value)}
-                                            />
-                                        ) : (
-                                            <p>
-                                                {index + 1} {'. '}
-                                                {el}
-                                            </p>
-                                        )}
-
-                                        <button
-                                            onClick={
-                                                editMode === el ? updateDealPress(editedDeal, el) : removeDealPress(el)
-                                            }
+                            <span>List</span>
+                            <ol>
+                                {!deals.length ? (
+                                    <p>Please,create new deal</p>
+                                ) : (
+                                    deals.map((el, index) => (
+                                        <div
+                                            key={el}
+                                            onDoubleClick={() => {
+                                                setEditMode(el);
+                                                setEditedDeal(el);
+                                            }}
                                         >
-                                            {editMode === el ? 'save' : 'x'}
-                                        </button>
-                                    </li>
-                                </div>
-                            ))}
-                        </ol>
-                    </div>
+                                            <li
+                                                style={{
+                                                    paddingTop: '10px',
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    // width: '200px',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                {editMode === el ? (
+                                                    <textarea
+                                                        value={editedDeal}
+                                                        onChange={(e) => setEditedDeal(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    <p>
+                                                        {index + 1} {'. '}
+                                                        {el}
+                                                    </p>
+                                                )}
+
+                                                <button
+                                                    onClick={
+                                                        editMode === el
+                                                            ? updateDealPress(editedDeal, el)
+                                                            : removeDealPress(el)
+                                                    }
+                                                >
+                                                    {editMode === el ? 'save' : 'x'}
+                                                </button>
+                                            </li>
+                                        </div>
+                                    ))
+                                )}
+                            </ol>
+                        </div>
+                    )}
                 </div>
             </MainLayout>
         </>

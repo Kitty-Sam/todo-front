@@ -13,12 +13,14 @@ export interface IUserInitState {
     allUsers: IUser[];
     deals: string[];
     friends: string[];
+    openedFriend: IUser;
 }
 
 const initialState: IUserInitState = {
     allUsers: [],
     deals: [],
     friends: [],
+    openedFriend: {} as IUser,
 };
 
 export const userReducer = (state = initialState, action: ActionsType) => {
@@ -31,6 +33,9 @@ export const userReducer = (state = initialState, action: ActionsType) => {
         }
         case UserActions.FETCH_DEALS: {
             return { ...state, deals: action.payload.deals };
+        }
+        case UserActions.FETCH_OPENED_FRIEND: {
+            return { ...state, openedFriend: action.payload.openedFriend };
         }
         default:
             return state;

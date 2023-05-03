@@ -58,6 +58,10 @@ export interface SetDealsPayload {
     deals: string[];
 }
 
+export interface SetOpenedFriendPayload {
+    openedFriend: IUser;
+}
+
 export type SetAllUsers = {
     type: typeof UserActions.FETCH_ALL_USERS;
     payload: SetAllUsersPayload;
@@ -73,7 +77,13 @@ export type SetDeals = {
     payload: SetDealsPayload;
 };
 
+export type SetOpenedFriend = {
+    type: typeof UserActions.FETCH_OPENED_FRIEND;
+    payload: SetOpenedFriendPayload;
+};
+
 export type ActionsType =
+    | SetOpenedFriend
     | SetAppError
     | SetAppStatus
     | SetIsLogged

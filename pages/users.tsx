@@ -34,8 +34,11 @@ const Users = () => {
             <div>
                 <h2 className={styles.header}>Users</h2>
                 <Link href={Routes.HOME}>home</Link>
+                <p>Just follow for someone to look him/her list</p>
             </div>
-            {users.length && (
+            {!users.length ? (
+                <p>It seems to me that your are alone here</p>
+            ) : (
                 <ol>
                     {users.map((el, index) => (
                         <div key={el.name}>

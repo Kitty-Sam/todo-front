@@ -10,8 +10,6 @@ export function* fetchAllUsersWorker() {
         // @ts-ignore
         const token: string | null = yield JSON.parse(localStorage.getItem('token'));
 
-        console.log('token from fetch users', token);
-
         const currentUserEmail: string = yield select(getCurrentUserEmail);
 
         // @ts-ignore

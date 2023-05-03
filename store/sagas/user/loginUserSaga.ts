@@ -1,5 +1,5 @@
 import { call, put } from '@redux-saga/core/effects';
-import { setAppStatus, setCurrentUser } from '~/store/actions/actions';
+import { setAppStatus, setCurrentUser, setIsLogged } from '~/store/actions/actions';
 import { RequestStatus } from '~/store/reducers/appReducer';
 import { LoginUser } from '~/store/sagas/sagasActions/actions/loginUser';
 import Router from 'next/router';
@@ -35,6 +35,17 @@ export function* loginUserWorker({ payload }: LoginUser) {
         // @ts-ignore
         const currentUser = yield result.json();
 
+        yield localStorage.setItem(
+            'currentUser',
+            JSON.stringify({
+                name: currentUser.name,
+                email: currentUser.email,
+                friends: currentUser.friends,
+                deals: currentUser.deals,
+                id: currentUser.id,
+            }),
+        );
+
         yield put(
             setCurrentUser({
                 currentUser: {
@@ -46,6 +57,8 @@ export function* loginUserWorker({ payload }: LoginUser) {
                 },
             }),
         );
+
+        yield put(setIsLogged({ isLogged: true }));
 
         yield call(Router.push, Routes.HOME);
 

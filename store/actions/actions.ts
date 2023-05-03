@@ -8,6 +8,7 @@ import {
     SetDealsPayload,
     SetFriendsPayload,
     SetIsLoggedPayload,
+    SetOpenedFriendPayload,
 } from '../reducers/types';
 import { AppActions, AuthActions, UserActions } from './actionsTypes';
 
@@ -46,5 +47,10 @@ export const setFriends = (payload: SetFriendsPayload) => ({
 
 export const setDeals = (payload: SetDealsPayload) => ({
     type: UserActions.FETCH_DEALS,
+    payload,
+});
+
+export const setOpenedFriend = (payload: SetOpenedFriendPayload) => ({
+    type: UserActions.FETCH_OPENED_FRIEND,
     payload,
 });
