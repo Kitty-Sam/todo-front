@@ -4,6 +4,7 @@ import { getCurrentUser } from '~/store/selectors/userSelector';
 import { logOutAction } from '~/store/sagas/sagasActions/actions/logOutUser';
 import { updateUserNameAction } from '~/store/sagas/sagasActions/actions/updateUserName';
 import { logOutAndRemoveAction } from '~/store/sagas/sagasActions/actions/logOutAndRemoveUser';
+import { toast } from 'react-toastify';
 
 export const PersonalInfo = () => {
     const [isEditMode, setIsEditMode] = useState(false);
@@ -14,10 +15,12 @@ export const PersonalInfo = () => {
     const dispatch = useDispatch();
     const logOutPress = () => {
         dispatch(logOutAction());
+        toast('User is successfully logged out!');
     };
 
     const logOutAndRemovePress = () => {
         dispatch(logOutAndRemoveAction());
+        toast('Profile is successfully removed!');
     };
 
     const changeNameUserPress = () => {
@@ -28,6 +31,7 @@ export const PersonalInfo = () => {
     const saveNewNameUserPress = () => {
         setIsEditMode(false);
         dispatch(updateUserNameAction({ newName }));
+        toast('User name is successfully updated!');
     };
 
     return (

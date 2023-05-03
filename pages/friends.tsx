@@ -8,7 +8,6 @@ import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFrie
 import { removeFriendAction } from '~/store/sagas/sagasActions/actions/removeFriend';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { openedFriendAction } from '~/store/sagas/sagasActions/actions/openedFriend';
 
 const Friends = () => {
     const Router = useRouter();
@@ -23,11 +22,8 @@ const Friends = () => {
     };
 
     const openedFriendPress = (id: string) => {
-        Router.push(Routes.FRIEND_PROFILE + '/' + id);
-        // dispatch(openedFriendAction({ email }));
+        Router.push(`${Routes.FRIEND_PROFILE}/${id}`);
     };
-
-    // const normilizedFriends = friends.map((friend) => ({ id: Date.now().toString() + friend }));
 
     return (
         <MainLayout>
@@ -42,7 +38,7 @@ const Friends = () => {
             ) : (
                 <ol>
                     {friends.map((el, index) => (
-                        <div key={el} onClick={() => openedFriendPress(el)}>
+                        <div key={el.id}>
                             <li
                                 style={{
                                     paddingTop: '10px',
@@ -55,9 +51,10 @@ const Friends = () => {
                             >
                                 <p>
                                     {index + 1} {'. '}
-                                    {el}
+                                    {el.email}
                                 </p>
-                                <button onClick={removeFriendPress(el)}>unfollow</button>
+                                <button onClick={removeFriendPress(el.email)}>unfollow</button>
+                                <button onClick={() => openedFriendPress(el.id)}>look</button>
                             </li>
                         </div>
                     ))}

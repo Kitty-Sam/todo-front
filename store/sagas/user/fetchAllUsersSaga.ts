@@ -2,7 +2,7 @@ import { put, select } from '@redux-saga/core/effects';
 import { setAllUsers, setAppStatus } from '~/store/actions/actions';
 import { RequestStatus } from '~/store/reducers/appReducer';
 import { getCurrentUserEmail } from '~/store/selectors/userSelector';
-import { IUser } from '~/store/reducers/authReducer';
+import { IUser } from '~/store/reducers/userReducer';
 
 export function* fetchAllUsersWorker() {
     try {

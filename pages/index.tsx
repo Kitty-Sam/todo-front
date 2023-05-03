@@ -4,12 +4,13 @@ import { MainLayout } from '~/components/MainLayout';
 import { useEffect, useState } from 'react';
 import { Form } from '~/components/Form';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { getCurrentUser, getDeals, getIsLogged } from '~/store/selectors/userSelector';
+import { getDeals, getIsLogged } from '~/store/selectors/userSelector';
 import { fetchDealsAction } from '~/store/sagas/sagasActions/actions/fetchDeals';
 import { updateDealAction } from '~/store/sagas/sagasActions/actions/updateDeal';
 import { removeDealAction } from '~/store/sagas/sagasActions/actions/removeDeal';
 import { checkTokenAction } from '~/store/sagas/sagasActions/actions/checkToken';
 import { PersonalInfo } from '~/components/PersonalInfo';
+import { toast } from 'react-toastify';
 
 export enum Routes {
     HOME = '/',
@@ -26,8 +27,8 @@ export default function Home() {
     const [editMode, setEditMode] = useState('');
 
     const deals = useSelector(getDeals, shallowEqual);
+
     const isLogged = useSelector(getIsLogged);
-    const currentUser = useSelector(getCurrentUser, shallowEqual);
 
     const dispatch = useDispatch();
 
@@ -36,13 +37,15 @@ export default function Home() {
         dispatch(checkTokenAction());
     }, []);
 
-    const removeDealPress = (title: string) => async () => {
-        dispatch(removeDealAction({ title }));
+    const removeDealPress = (id: string) => async () => {
+        dispatch(removeDealAction({ id }));
+        toast('Item is successfully removed!');
     };
 
-    const updateDealPress = (newTitle: string, oldTitle: string) => async () => {
-        dispatch(updateDealAction({ newTitle, oldTitle }));
+    const updateDealPress = (newTitle: string, id: string) => async () => {
+        dispatch(updateDealAction({ newTitle, id }));
         setEditMode('');
+        toast('Title is successfully updated!');
     };
 
     return (
@@ -86,10 +89,10 @@ export default function Home() {
                                 ) : (
                                     deals.map((el, index) => (
                                         <div
-                                            key={el}
+                                            key={el.id}
                                             onDoubleClick={() => {
-                                                setEditMode(el);
-                                                setEditedDeal(el);
+                                                setEditMode(el.title);
+                                                setEditedDeal(el.title);
                                             }}
                                         >
                                             <li
@@ -102,7 +105,7 @@ export default function Home() {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                {editMode === el ? (
+                                                {editMode === el.title ? (
                                                     <textarea
                                                         value={editedDeal}
                                                         onChange={(e) => setEditedDeal(e.target.value)}
@@ -110,18 +113,18 @@ export default function Home() {
                                                 ) : (
                                                     <p>
                                                         {index + 1} {'. '}
-                                                        {el}
+                                                        {el.title}
                                                     </p>
                                                 )}
 
                                                 <button
                                                     onClick={
-                                                        editMode === el
-                                                            ? updateDealPress(editedDeal, el)
-                                                            : removeDealPress(el)
+                                                        editMode === el.title
+                                                            ? updateDealPress(editedDeal, el.id)
+                                                            : removeDealPress(el.id)
                                                     }
                                                 >
-                                                    {editMode === el ? 'save' : 'x'}
+                                                    {editMode === el.title ? 'save' : 'x'}
                                                 </button>
                                             </li>
                                         </div>

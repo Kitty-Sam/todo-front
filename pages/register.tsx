@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Input } from '~/components/Input';
 import { useDispatch } from 'react-redux';
 import { registerAction } from '~/store/sagas/sagasActions/actions/registerUser';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ const Register = () => {
             email,
             name,
             password,
+            toast,
         };
         dispatch(registerAction(payload));
     };

@@ -4,8 +4,10 @@ import Router from 'next/router';
 import { Routes } from '~/pages/index';
 import { Input } from '~/components/Input';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
+import { toast } from 'react-toastify';
+import { getAppError } from '~/store/selectors/userSelector';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,6 +19,7 @@ const Login = () => {
         const payload = {
             email,
             password,
+            toast,
         };
         dispatch(loginAction(payload));
     };

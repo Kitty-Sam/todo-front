@@ -1,13 +1,6 @@
 import { ActionsType } from './types';
 import { AuthActions } from '../actions/actionsTypes';
-
-export interface IUser {
-    id: string;
-    name: string;
-    email: string;
-    deals: string[];
-    friends: string[];
-}
+import { IUser } from '~/store/reducers/userReducer';
 
 export interface IAuthInitState {
     isLogged: boolean;

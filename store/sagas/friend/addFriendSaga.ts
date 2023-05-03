@@ -4,7 +4,7 @@ import { RequestStatus } from '~/store/reducers/appReducer';
 import { AddFriend } from '~/store/sagas/sagasActions/actions/addFriend';
 
 export function* addFriendWorker({ payload }: AddFriend) {
-    const { email } = payload;
+    const { email, id } = payload;
     try {
         yield put(setAppStatus({ status: RequestStatus.LOADING }));
         // @ts-ignore
@@ -16,7 +16,7 @@ export function* addFriendWorker({ payload }: AddFriend) {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify({ email, id }),
         });
 
         const data: string[] = yield res.json();

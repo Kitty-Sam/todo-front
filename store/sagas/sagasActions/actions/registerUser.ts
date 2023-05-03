@@ -4,6 +4,7 @@ export interface RegisterUserPayloadType {
     email: string;
     name: string;
     password: string;
+    toast: any;
 }
 
 export const registerAction = (payload: RegisterUserPayloadType) => ({

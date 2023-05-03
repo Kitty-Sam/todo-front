@@ -1,7 +1,7 @@
 import { OPENED_FRIEND } from '~/store/sagas/sagasActions/type';
 
 export interface openedFriendPayloadType {
-    email: string;
+    id: string;
 }
 
 export const openedFriendAction = (payload: openedFriendPayloadType) => ({

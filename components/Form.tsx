@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Input } from '~/components/Input';
 import { useDispatch } from 'react-redux';
 import { addDealAction } from '~/store/sagas/sagasActions/actions/addDeal';
+import { toast } from 'react-toastify';
 
 export interface FormProps {
     item: string;
@@ -15,6 +16,10 @@ export const Form: FC<FormProps> = ({ item, setItem }) => {
     const dispatch = useDispatch();
 
     const addDealPress = () => {
+        if (item.trim() === '') {
+            toast('Please, enter any deal');
+            return;
+        }
         dispatch(addDealAction({ title: item.trim() }));
         setItem('');
     };

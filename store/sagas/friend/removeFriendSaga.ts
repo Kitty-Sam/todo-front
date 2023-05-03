@@ -22,7 +22,6 @@ export function* removeFriendWorker({ payload }: RemoveFriend) {
         const data = yield res.json();
         yield put(setFriends({ friends: data }));
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
-        console.log(data);
     } catch (error: any) {
         console.warn(error);
         yield put(setFriends({ friends: [] }));

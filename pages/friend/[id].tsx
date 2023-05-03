@@ -1,19 +1,28 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
 import { Routes } from '~/pages';
-import { shallowEqual, useSelector } from 'react-redux';
-import { getOpenedFriend } from '~/store/selectors/userSelector';
+import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { openedFriendAction } from '~/store/sagas/sagasActions/actions/openedFriend';
+import { IUser } from '~/store/reducers/userReducer';
+import { GetServerSideProps } from 'next';
 
-const Friend = () => {
-    const openedFriend = useSelector(getOpenedFriend, shallowEqual);
-
+const Friend = (data: { openedFriend: IUser }) => {
+    const { openedFriend } = data;
     const { deals, name } = openedFriend;
 
     const { query } = useRouter();
+    const { id } = query;
 
-    console.log('query', query);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (id) {
+            dispatch(openedFriendAction({ id: String(id) }));
+        }
+    }, []);
 
     return (
         <MainLayout>
@@ -27,7 +36,7 @@ const Friend = () => {
             ) : (
                 <ol>
                     {deals.map((el, index) => (
-                        <div key={el}>
+                        <div key={el.id}>
                             <li
                                 style={{
                                     paddingTop: '10px',
@@ -40,7 +49,7 @@ const Friend = () => {
                             >
                                 <p>
                                     {index + 1} {'. '}
-                                    {el}
+                                    {el.title}
                                 </p>
                             </li>
                         </div>
@@ -52,3 +61,19 @@ const Friend = () => {
 };
 
 export default Friend;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { id } = context?.query;
+
+    const result = await fetch(`http://localhost:4000/user/get-user-by-id`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+    });
+
+    const openedFriend = await result.json();
+
+    return { props: { openedFriend } };
+};

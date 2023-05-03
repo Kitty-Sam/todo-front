@@ -22,8 +22,6 @@ export function* checkTokenWorker() {
 
         yield put(setCurrentUser({ currentUser }));
 
-        console.log('data', data);
-
         if (data?.message?.includes('User is not authorized')) {
             yield put(setIsLogged({ isLogged: false }));
             return;

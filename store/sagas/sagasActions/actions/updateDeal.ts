@@ -2,7 +2,7 @@ import { UPDATE_DEAL } from '~/store/sagas/sagasActions/type';
 
 export interface updateDealPayloadType {
     newTitle: string;
-    oldTitle: string;
+    id: string;
 }
 
 export const updateDealAction = (payload: updateDealPayloadType) => ({

@@ -5,14 +5,14 @@ export interface IUser {
     id: string;
     name: string;
     email: string;
-    deals: string[];
-    friends: string[];
+    deals: { title: string; id: string }[];
+    friends: { email: string; id: string }[];
 }
 
 export interface IUserInitState {
     allUsers: IUser[];
-    deals: string[];
-    friends: string[];
+    deals: { title: string; id: string }[];
+    friends: { email: string; id: string }[];
     openedFriend: IUser;
 }
 

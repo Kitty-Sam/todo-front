@@ -4,7 +4,7 @@ import { RequestStatus } from '~/store/reducers/appReducer';
 import { UpdateDeal } from '~/store/sagas/sagasActions/actions/updateDeal';
 
 export function* updateDealWorker({ payload }: UpdateDeal) {
-    const { newTitle, oldTitle } = payload;
+    const { newTitle, id } = payload;
     try {
         yield put(setAppStatus({ status: RequestStatus.LOADING }));
         // @ts-ignore
@@ -16,10 +16,12 @@ export function* updateDealWorker({ payload }: UpdateDeal) {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ newTitle, oldTitle }),
+            body: JSON.stringify({ newTitle, id }),
         });
 
-        const data: string[] = yield res.json();
+        // @ts-ignore
+        const data = yield res.json();
+
         yield put(setDeals({ deals: data }));
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
         console.log(data);

@@ -21,8 +21,9 @@ const Users = () => {
         dispatch(fetchFriendsAction());
     }, []);
 
-    const addFriendPress = (email: string) => async () => {
-        dispatch(addFriendAction({ email }));
+    const addFriendPress = (payload: { email: string; id: string }) => async () => {
+        const { email, id } = payload;
+        dispatch(addFriendAction({ email, id }));
     };
 
     const removeFriendPress = (email: string) => async () => {
@@ -58,12 +59,12 @@ const Users = () => {
                                 </p>
                                 <button
                                     onClick={
-                                        friends.includes(el.email)
+                                        friends.find((friend) => friend.email === el.email)
                                             ? removeFriendPress(el.email)
-                                            : addFriendPress(el.email)
+                                            : addFriendPress({ email: el.email, id: el.id })
                                     }
                                 >
-                                    {friends.includes(el.email) ? 'unfollow' : 'follow'}
+                                    {friends.find((friend) => friend.email === el.email) ? 'unfollow' : 'follow'}
                                 </button>
                             </li>
                         </div>

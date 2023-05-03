@@ -1,10 +1,10 @@
 //App
 import { RequestStatus } from './appReducer';
 import { AppActions, AuthActions, UserActions } from '../actions/actionsTypes';
-import { IUser } from '~/store/reducers/authReducer';
+import { IUser } from '~/store/reducers/userReducer';
 
 export interface IApp {
-    error: boolean;
+    error: string;
     status: RequestStatus;
 }
 
@@ -13,7 +13,7 @@ export interface SetAppStatusPayload {
 }
 
 export interface SetAppErrorPayload {
-    error: boolean;
+    error: string;
 }
 
 export type SetAppStatus = {
@@ -51,11 +51,11 @@ export interface SetAllUsersPayload {
 }
 
 export interface SetFriendsPayload {
-    friends: string[];
+    friends: { email: string; id: string }[];
 }
 
 export interface SetDealsPayload {
-    deals: string[];
+    deals: { title: string; id: string }[];
 }
 
 export interface SetOpenedFriendPayload {

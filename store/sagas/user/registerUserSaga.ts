@@ -17,12 +17,14 @@ export function* registerUserWorker({ payload }: RegisterUser) {
             },
             body: JSON.stringify(payload),
         });
-        // @ts-ignore
-        // const data = yield res.json();
-        // yield put(setCurrentUser({ currentUser: data }));
-        yield call(Router.push, Routes.LOGIN);
 
-        yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
+        if (res?.ok) {
+            yield call(Router.push, Routes.LOGIN);
+            yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
+            yield call(payload.toast, 'Success!');
+        } else {
+            yield call(payload.toast, 'Check your credentials (password should contains min 4 symbols');
+        }
     } catch (error: any) {
         console.warn(error);
         yield put(setAppStatus({ status: RequestStatus.FAILED }));

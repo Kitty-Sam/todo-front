@@ -1,7 +1,7 @@
 import { REMOVE_DEAL } from '~/store/sagas/sagasActions/type';
 
 export interface removeDealPayloadType {
-    title: string;
+    id: string;
 }
 
 export const removeDealAction = (payload: removeDealPayloadType) => ({
