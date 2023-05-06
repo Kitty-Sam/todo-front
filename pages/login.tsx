@@ -1,13 +1,12 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
 import Router from 'next/router';
-import { Routes } from '~/pages/index';
+import { Routes } from './index';
 import { Input } from '~/components/Input';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
 import { toast } from 'react-toastify';
-import { getAppError } from '~/store/selectors/userSelector';
 
 const Login = () => {
     const [email, setEmail] = useState('');

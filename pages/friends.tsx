@@ -1,13 +1,15 @@
-import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
-import { Routes } from '~/pages/index';
+
 import { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { getFriends } from '~/store/selectors/userSelector';
-import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFriends';
+
 import { removeFriendAction } from '~/store/sagas/sagasActions/actions/removeFriend';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getFriends } from '~/store/selectors/userSelector';
+import { fetchFriendsAction } from '~/store/sagas/sagasActions/actions/fetchFriends';
+import { Routes } from './index';
+import { MainLayout } from '~/components/MainLayout';
 
 const Friends = () => {
     const Router = useRouter();

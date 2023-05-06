@@ -1,7 +1,7 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
 import Router from 'next/router';
-import { Routes } from '~/pages/index';
+import { Routes } from './index';
 import { useState } from 'react';
 import { Input } from '~/components/Input';
 import { useDispatch } from 'react-redux';

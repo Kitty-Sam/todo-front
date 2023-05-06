@@ -1,28 +1,23 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
-import { Routes } from '~/pages';
-import { useDispatch } from 'react-redux';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { openedFriendAction } from '~/store/sagas/sagasActions/actions/openedFriend';
 import { IUser } from '~/store/reducers/userReducer';
 import { GetServerSideProps } from 'next';
+import { Routes } from '../index';
+import axios from 'axios';
+import { removeFriendAction } from '~/store/sagas/sagasActions/actions/removeFriend';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
-const Friend = (data: { openedFriend: IUser }) => {
-    const { openedFriend } = data;
-    const { deals, name } = openedFriend;
-
-    const { query } = useRouter();
-    const { id } = query;
-
+const Friend = (data: { data?: IUser; error?: { message: string } }) => {
+    const router = useRouter();
     const dispatch = useDispatch();
+    const removeFriendPress = (email: string) => () => {
+        dispatch(removeFriendAction({ email }));
+        router.push(Routes.FRIENDS);
+    };
 
-    useEffect(() => {
-        if (id) {
-            dispatch(openedFriendAction({ id: String(id) }));
-        }
-    }, []);
+    const { deals, name } = data.data || {};
 
     return (
         <MainLayout>
@@ -31,8 +26,11 @@ const Friend = (data: { openedFriend: IUser }) => {
                 <Link href={Routes.FRIENDS}>back</Link>
             </div>
             <span>List</span>
-            {!deals.length ? (
-                <div>{name} does not have any good deals yet</div>
+            {!deals || !deals.length ? (
+                <>
+                    <div>It is absent any good deals here or user removed his/her profile</div>
+                    <button onClick={removeFriendPress('asd@gmail.com')}>unfollow</button>
+                </>
             ) : (
                 <ol>
                     {deals.map((el, index) => (
@@ -65,15 +63,30 @@ export default Friend;
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { id } = context?.query;
 
-    const result = await fetch(`http://localhost:4000/user/get-user-by-id`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: id }),
-    });
+    try {
+        const { data } = await axios.post(
+            'http://localhost:4000/user/get-user-by-id',
+            {
+                id: String(id),
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    Cookie: context.req.headers.cookie,
+                },
+            },
+        );
+        console.log('data request', data);
+        return { props: { data } };
+    } catch (error) {
+        console.log(error);
 
-    const openedFriend = await result.json();
-
-    return { props: { openedFriend } };
+        return {
+            props: {
+                error: {
+                    message: 'Error fetching data from server',
+                },
+            },
+        };
+    }
 };

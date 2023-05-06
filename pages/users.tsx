@@ -1,6 +1,6 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from '~/styles/Profile.module.css';
-import { Routes } from '~/pages/index';
+import { Routes } from './index';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';

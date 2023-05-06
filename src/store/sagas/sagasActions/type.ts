@@ -1,0 +1,15 @@
+export const FETCH_ALL_USERS = 'FETCH_ALL_USERS';
+export const FETCH_FRIENDS = 'FETCH_FRIENDS';
+export const FETCH_DEALS = 'FETCH_DEALS';
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const ADD_FRIEND = 'ADD_FRIEND';
+export const ADD_DEAL = 'ADD_DEAL';
+export const REMOVE_DEAL = 'REMOVE_DEAL';
+export const UPDATE_DEAL = 'UPDATE_DEAL';
+export const REMOVE_FRIEND = 'REMOVE_FRIEND';
+export const OPENED_FRIEND = 'OPENED_FRIEND';
+export const AUTH_ME = 'AUTH_ME';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const LOGOUT_AND_REMOVE_USER = 'LOGOUT_AND_REMOVE_USER';
+export const UPDATE_USER = 'UPDATE_USER';
