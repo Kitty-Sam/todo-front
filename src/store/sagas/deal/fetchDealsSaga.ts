@@ -14,7 +14,6 @@ export function* fetchDealsWorker() {
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
     } catch (error: any) {
         console.warn(error);
-        yield put(setDeals({ deals: [] }));
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

@@ -27,7 +27,6 @@ export function* fetchAllUsersWorker() {
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
     } catch (error: any) {
         console.warn(error);
-        yield put(setAllUsers({ allUsers: [] }));
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

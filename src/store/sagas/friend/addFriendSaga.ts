@@ -19,7 +19,6 @@ export function* addFriendWorker({ payload }: AddFriend) {
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
     } catch (error: any) {
         console.warn(error);
-        yield put(setFriends({ friends: [] }));
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

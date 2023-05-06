@@ -1,7 +1,7 @@
 import { REMOVE_FRIEND } from '~/store/sagas/sagasActions/type';
 
 export interface removeFriendPayloadType {
-    email: string;
+    id: string;
 }
 
 export const removeFriendAction = (payload: removeFriendPayloadType) => ({

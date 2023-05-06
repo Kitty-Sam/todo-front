@@ -1,6 +1,7 @@
-import styles from '~/src/styles/Home.module.css';
-import Router from 'next/router';
-import { useEffect, useState } from 'react';
+import styles from 'src/styles/Home.module.scss';
+import stylesLink from 'src/styles/Link.module.scss';
+
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MainLayout } from '~/components/MainLayout';
 import { PersonalInfo } from '~/components/PersonalInfo';
@@ -9,6 +10,7 @@ import { getIsLogged } from '~/store/selectors/userSelector';
 import { fetchDealsAction } from '~/store/sagas/sagasActions/actions/fetchDeals';
 import { checkTokenAction } from '~/store/sagas/sagasActions/actions/checkToken';
 import UserDeals from '~/components/UserDeals';
+import Link from 'next/link';
 
 export enum Routes {
     HOME = '/',
@@ -39,26 +41,24 @@ export default function Home() {
                         <div className={styles.text}>
                             <h1>List of good things</h1>
                             <div className={styles.buttonsContainer}>
-                                {/*<Link href={Routes.LOGIN}>login</Link>*/}
-                                {/*<Link href={Routes.REGISTER}>register</Link>*/}
-                                <button className={styles.btn} onClick={() => Router.push(Routes.LOGIN)}>
+                                <Link href={Routes.LOGIN} className={stylesLink.link}>
                                     login
-                                </button>
-                                <button className={styles.btn} onClick={() => Router.push(Routes.REGISTER)}>
+                                </Link>
+                                <Link href={Routes.REGISTER} className={stylesLink.link}>
                                     register
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     ) : (
                         <div className={styles.text}>
                             <h1>List of good things</h1>
                             <div className={styles.buttonsContainer}>
-                                <button className={styles.btn} onClick={() => Router.push(Routes.FRIENDS)}>
+                                <Link href={Routes.FRIENDS} className={stylesLink.link}>
                                     friends
-                                </button>
-                                <button className={styles.btn} onClick={() => Router.push(Routes.USERS)}>
+                                </Link>
+                                <Link href={Routes.USERS} className={stylesLink.link}>
                                     all users
-                                </button>
+                                </Link>
                             </div>
                             <PersonalInfo />
                             <span>Create new item</span>

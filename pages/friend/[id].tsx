@@ -1,5 +1,6 @@
 import { MainLayout } from '~/components/MainLayout';
-import styles from '~/styles/Profile.module.css';
+import styles from 'src/styles/Profile.module.scss';
+
 import Link from 'next/link';
 import { IUser } from '~/store/reducers/userReducer';
 import { GetServerSideProps } from 'next';
@@ -11,9 +12,11 @@ import { useRouter } from 'next/router';
 
 const Friend = (data: { data?: IUser; error?: { message: string } }) => {
     const router = useRouter();
+
+    const { id } = router.query;
     const dispatch = useDispatch();
-    const removeFriendPress = (email: string) => () => {
-        dispatch(removeFriendAction({ email }));
+    const removeFriendPress = (id: string) => () => {
+        dispatch(removeFriendAction({ id }));
         router.push(Routes.FRIENDS);
     };
 
@@ -29,26 +32,14 @@ const Friend = (data: { data?: IUser; error?: { message: string } }) => {
             {!deals || !deals.length ? (
                 <>
                     <div>It is absent any good deals here or user removed his/her profile</div>
-                    <button onClick={removeFriendPress('asd@gmail.com')}>unfollow</button>
+                    <button onClick={removeFriendPress(String(id))}>unfollow</button>
                 </>
             ) : (
                 <ol>
-                    {deals.map((el, index) => (
+                    {deals.map((el) => (
                         <div key={el.id}>
-                            <li
-                                style={{
-                                    paddingTop: '10px',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    // width: '200px',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <p>
-                                    {index + 1} {'. '}
-                                    {el.title}
-                                </p>
+                            <li className={styles.userItemContainer}>
+                                <p>{el.title}</p>
                             </li>
                         </div>
                     ))}
@@ -76,7 +67,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 },
             },
         );
-        console.log('data request', data);
         return { props: { data } };
     } catch (error) {
         console.log(error);

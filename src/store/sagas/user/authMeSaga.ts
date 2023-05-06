@@ -26,6 +26,7 @@ export function* authMeWorker() {
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
     } catch (error: any) {
         console.warn(error);
+        yield put(setIsLogged({ isLogged: false }));
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

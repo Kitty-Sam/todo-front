@@ -1,12 +1,14 @@
 import { MainLayout } from '~/components/MainLayout';
-import styles from '~/styles/Profile.module.css';
-import Router from 'next/router';
+import styles from 'src/styles/Profile.module.scss';
+
 import { Routes } from './index';
 import { Input } from '~/components/Input';
-import { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
 import { toast } from 'react-toastify';
+import stylesRegister from 'src/styles/Register.module.scss';
+import Link from 'next/link';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -23,26 +25,28 @@ const Login = () => {
         dispatch(loginAction(payload));
     };
 
+    const changeUserPasswordPress = (e: ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
+
+    const changeUserEmailPress = (e: ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
+
     return (
         <MainLayout>
             <div>
                 <h2 className={styles.header}>Login</h2>
-                <button className={styles.btn} onClick={() => Router.push(Routes.HOME)}>
+                <Link href={Routes.HOME} className={stylesRegister.link}>
                     home
-                </button>
+                </Link>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Input placeholder={'enter your email'} value={email} onChange={(e: any) => setEmail(e.target.value)} />
-                <Input
-                    placeholder={'enter your password'}
-                    value={password}
-                    onChange={(e: any) => setPassword(e.target.value)}
-                />
-                <div>
-                    <button className={styles.btn} onClick={loginPress}>
-                        login
-                    </button>
-                </div>
+            <div className={stylesRegister.formContainer}>
+                <Input placeholder={'enter your email'} value={email} onChange={changeUserEmailPress} />
+                <Input placeholder={'enter your password'} value={password} onChange={changeUserPasswordPress} />
+                <button className={styles.btn} onClick={loginPress} disabled={!email || !password}>
+                    login
+                </button>
             </div>
         </MainLayout>
     );

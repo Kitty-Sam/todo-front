@@ -1,17 +1,15 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
+import styles from '~/styles/Form.module.scss';
 
 import { useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
 import { addDealAction } from '~/store/sagas/sagasActions/actions/addDeal';
 import { Input } from '~/components/Input';
+import { IFormProps } from '~/components/interfaces';
 
-export interface FormProps {
-    item: string;
-    setItem: (value: string) => void;
-}
-export const Form: FC<FormProps> = ({ item, setItem }) => {
-    const onChangeItemPress = (e: any) => {
+export const Form: FC<IFormProps> = ({ item, setItem }) => {
+    const onChangeItemPress = (e: ChangeEvent<HTMLInputElement>) => {
         setItem(e.target.value);
     };
 
@@ -22,15 +20,18 @@ export const Form: FC<FormProps> = ({ item, setItem }) => {
             toast('Please, enter any deal');
             return;
         }
+
         dispatch(addDealAction({ title: item.trim() }));
         setItem('');
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <div className={styles.inputContainer}>
             <Input placeholder={'enter new item'} value={item} onChange={onChangeItemPress} />
             <div>
-                <button onClick={addDealPress}>add</button>
+                <button onClick={addDealPress} disabled={!item}>
+                    add
+                </button>
             </div>
         </div>
     );

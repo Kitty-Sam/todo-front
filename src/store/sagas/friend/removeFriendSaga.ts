@@ -5,14 +5,14 @@ import { RemoveFriend } from '~/store/sagas/sagasActions/actions/removeFriend';
 import axios from 'axios';
 
 export function* removeFriendWorker({ payload }: RemoveFriend) {
-    const { email } = payload;
+    const { id } = payload;
 
     try {
         yield put(setAppStatus({ status: RequestStatus.LOADING }));
 
         // @ts-ignore
         const { data } = yield axios.delete('http://localhost:4000/user/remove-friend', {
-            data: { email },
+            data: { id },
             withCredentials: true,
         });
 
@@ -20,7 +20,6 @@ export function* removeFriendWorker({ payload }: RemoveFriend) {
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
     } catch (error: any) {
         console.warn(error);
-        yield put(setFriends({ friends: [] }));
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

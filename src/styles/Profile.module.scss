@@ -1,0 +1,26 @@
+.header {
+  color: #ffc107;
+  text-align: center;
+  padding: 10px;
+  text-transform: uppercase;
+  margin: 5px;
+}
+
+.userItemContainer {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 200px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.friendContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
