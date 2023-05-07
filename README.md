@@ -1,11 +1,13 @@
-## Getting Started
+## Local setup
 
+```bash
+npm install
+```
+
+
+## Launch
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 

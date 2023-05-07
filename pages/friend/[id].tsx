@@ -1,5 +1,6 @@
 import { MainLayout } from '~/components/MainLayout';
 import styles from 'src/styles/Profile.module.scss';
+import stylesLink from 'src/styles/Link.module.scss';
 
 import Link from 'next/link';
 import { IUser } from '~/store/reducers/userReducer';
@@ -26,7 +27,9 @@ const Friend = (data: { data?: IUser; error?: { message: string } }) => {
         <MainLayout>
             <div>
                 <h2 className={styles.header}>{name} profile</h2>
-                <Link href={Routes.FRIENDS}>back</Link>
+                <Link href={Routes.FRIENDS} className={stylesLink.link}>
+                    home
+                </Link>
             </div>
             <span>List</span>
             {!deals || !deals.length ? (
