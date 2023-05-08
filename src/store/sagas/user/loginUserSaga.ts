@@ -7,10 +7,6 @@ import axios from 'axios';
 
 export enum Routes {
     HOME = '/',
-    FRIENDS = '/friends',
-    USERS = '/users',
-    FRIEND_PROFILE = '/friend',
-    REGISTER = '/register',
     LOGIN = '/login',
 }
 export function* loginUserWorker({ payload }: LoginUser) {
