@@ -9,10 +9,12 @@ import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
 import { toast } from 'react-toastify';
 import stylesRegister from 'src/styles/Register.module.scss';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [visible, setIsVisible] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -33,6 +35,10 @@ const Login = () => {
         setEmail(e.target.value);
     };
 
+    const toggleVisibilityForPassword = () => {
+        setIsVisible(!visible);
+    };
+
     return (
         <MainLayout>
             <div>
@@ -42,8 +48,22 @@ const Login = () => {
                 </Link>
             </div>
             <div className={stylesRegister.formContainer}>
-                <Input placeholder={'enter your email'} value={email} onChange={changeUserEmailPress} />
-                <Input placeholder={'enter your password'} value={password} onChange={changeUserPasswordPress} />
+                <Input placeholder={'enter email'} value={email} onChange={changeUserEmailPress} type="text" />
+                <div className={stylesRegister.eyeContainer}>
+                    <Input
+                        placeholder={'enter password'}
+                        value={password}
+                        onChange={changeUserPasswordPress}
+                        type={visible ? 'text' : 'password'}
+                    />
+
+                    <FontAwesomeIcon
+                        icon={visible ? 'eye-slash' : 'eye'}
+                        onClick={toggleVisibilityForPassword}
+                        className={stylesRegister.eye}
+                    />
+                </div>
+
                 <button className={styles.btn} onClick={loginPress} disabled={!email || !password}>
                     login
                 </button>

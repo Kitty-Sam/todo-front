@@ -9,11 +9,13 @@ import { useDispatch } from 'react-redux';
 import { registerAction } from '~/store/sagas/sagasActions/actions/registerUser';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [visible, setIsVisible] = useState(false);
 
     const dispatch = useDispatch();
     const registerPress = () => {
@@ -38,6 +40,10 @@ const Register = () => {
         setPassword(e.target.value);
     };
 
+    const toggleVisibilityForPassword = () => {
+        setIsVisible(!visible);
+    };
+
     return (
         <MainLayout>
             <div>
@@ -47,9 +53,21 @@ const Register = () => {
                 </Link>
             </div>
             <div className={stylesRegister.formContainer}>
-                <Input placeholder={'enter your name'} value={name} onChange={changeUserNamePress} />
-                <Input placeholder={'enter your email'} value={email} onChange={changeUserEmailPress} />
-                <Input placeholder={'enter your password'} value={password} onChange={changeUserPasswordPress} />
+                <Input placeholder={'enter name'} value={name} onChange={changeUserNamePress} type="text" />
+                <Input placeholder={'enter email'} value={email} onChange={changeUserEmailPress} type="text" />
+                <div className={stylesRegister.eyeContainer}>
+                    <Input
+                        placeholder={'enter password'}
+                        value={password}
+                        onChange={changeUserPasswordPress}
+                        type={visible ? 'text' : 'password'}
+                    />
+                    <FontAwesomeIcon
+                        icon={visible ? 'eye-slash' : 'eye'}
+                        onClick={toggleVisibilityForPassword}
+                        className={stylesRegister.eye}
+                    />
+                </div>
                 <button className={styles.btn} onClick={registerPress} disabled={!email || !password}>
                     register
                 </button>

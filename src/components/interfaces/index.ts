@@ -9,4 +9,5 @@ export interface InputProps {
     placeholder: string;
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    type: string;
 }
