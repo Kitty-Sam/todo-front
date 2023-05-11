@@ -6,7 +6,6 @@ import { Input } from '~/components/Input';
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '~/store/sagas/sagasActions/actions/loginUser';
-import { toast } from 'react-toastify';
 import stylesRegister from 'src/styles/Register.module.scss';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +21,6 @@ const Login = () => {
         const payload = {
             email,
             password,
-            toast,
         };
         dispatch(loginAction(payload));
     };

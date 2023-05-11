@@ -4,6 +4,7 @@ import { RequestStatus } from '~/store/reducers/appReducer';
 import { LoginUser } from '~/store/sagas/sagasActions/actions/loginUser';
 import Router from 'next/router';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export enum Routes {
     HOME = '/',
@@ -37,9 +38,9 @@ export function* loginUserWorker({ payload }: LoginUser) {
         yield put(setIsLogged({ isLogged: true }));
         yield call(Router.push, Routes.HOME);
         yield put(setAppStatus({ status: RequestStatus.SUCCEEDED }));
-        yield call(payload.toast, `Welcome back ${data.name}`);
+        yield call(toast, `Welcome back ${data.name}`);
     } catch (error: any) {
-        yield call(payload.toast, 'Check credentials');
+        yield call(toast, 'Check credentials');
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

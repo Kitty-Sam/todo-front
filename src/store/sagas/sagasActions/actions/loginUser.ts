@@ -3,7 +3,6 @@ import { LOGIN_USER } from '~/store/sagas/sagasActions/type';
 export interface LoginUserPayloadType {
     email: string;
     password: string;
-    toast: any;
 }
 
 export const loginAction = (payload: LoginUserPayloadType) => ({

@@ -6,6 +6,7 @@ import { RegisterUser } from '~/store/sagas/sagasActions/actions/registerUser';
 import axios from 'axios';
 import Router from 'next/router';
 import { Routes } from '~/store/sagas/user/loginUserSaga';
+import { toast } from 'react-toastify';
 
 export function* registerUserWorker({ payload }: RegisterUser) {
     try {
@@ -13,11 +14,11 @@ export function* registerUserWorker({ payload }: RegisterUser) {
 
         yield axios.post('http://localhost:4000/auth/register', payload);
 
-        yield call(payload.toast, 'Success!');
+        yield call(toast, 'Success!');
 
         yield call(Router.push, Routes.LOGIN);
     } catch (error: any) {
-        yield call(payload.toast, 'Check your credentials (password should contains min 4 symbols');
+        yield call(toast, 'Check your credentials (password should contains min 4 symbols');
         yield put(setAppStatus({ status: RequestStatus.FAILED }));
     }
 }

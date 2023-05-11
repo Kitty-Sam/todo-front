@@ -7,7 +7,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Input } from '~/components/Input';
 import { useDispatch } from 'react-redux';
 import { registerAction } from '~/store/sagas/sagasActions/actions/registerUser';
-import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -23,7 +22,6 @@ const Register = () => {
             email,
             name,
             password,
-            toast,
         };
         dispatch(registerAction(payload));
     };
