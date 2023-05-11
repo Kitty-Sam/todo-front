@@ -34,42 +34,40 @@ export default function Home() {
     }, []);
 
     return (
-        <>
-            <MainLayout>
-                <div className={styles.mainContent}>
-                    {!isLogged ? (
-                        <div className={styles.text}>
-                            <h1>List of good things</h1>
-                            <div className={styles.buttonsContainer}>
-                                <Link href={Routes.LOGIN} className={stylesLink.link}>
-                                    login
-                                </Link>
-                                <Link href={Routes.REGISTER} className={stylesLink.link}>
-                                    register
-                                </Link>
-                            </div>
+        <MainLayout>
+            <div className={styles.mainContent}>
+                {!isLogged ? (
+                    <div className={styles.text}>
+                        <h1>List of good things</h1>
+                        <div className={styles.buttonsContainer}>
+                            <Link href={Routes.LOGIN} className={stylesLink.link}>
+                                login
+                            </Link>
+                            <Link href={Routes.REGISTER} className={stylesLink.link}>
+                                register
+                            </Link>
                         </div>
-                    ) : (
-                        <div className={styles.text}>
-                            <h1>List of good things</h1>
-                            <div className={styles.buttonsContainer}>
-                                <Link href={Routes.FRIENDS} className={stylesLink.link}>
-                                    friends
-                                </Link>
-                                <Link href={Routes.USERS} className={stylesLink.link}>
-                                    all users
-                                </Link>
-                            </div>
-                            <PersonalInfo />
-                            <span>Create new item</span>
-                            <Form item={item} setItem={setItem} />
+                    </div>
+                ) : (
+                    <div className={styles.text}>
+                        <h1>List of good things</h1>
+                        <div className={styles.buttonsContainer}>
+                            <Link href={Routes.FRIENDS} className={stylesLink.link}>
+                                friends
+                            </Link>
+                            <Link href={Routes.USERS} className={stylesLink.link}>
+                                all users
+                            </Link>
+                        </div>
+                        <PersonalInfo />
+                        <span>Create new item</span>
+                        <Form item={item} setItem={setItem} />
 
-                            <span>List</span>
-                            <UserDeals />
-                        </div>
-                    )}
-                </div>
-            </MainLayout>
-        </>
+                        <span>List</span>
+                        <UserDeals />
+                    </div>
+                )}
+            </div>
+        </MainLayout>
     );
 }

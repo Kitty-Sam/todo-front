@@ -28,7 +28,7 @@ const Friend = (data: { data?: IUser; error?: { message: string } }) => {
             <div>
                 <h2 className={styles.header}>{name} profile</h2>
                 <Link href={Routes.FRIENDS} className={stylesLink.link}>
-                    home
+                    back
                 </Link>
             </div>
             <span>List</span>
@@ -41,7 +41,7 @@ const Friend = (data: { data?: IUser; error?: { message: string } }) => {
                 <ol>
                     {deals.map((el) => (
                         <div key={el.id}>
-                            <li className={styles.userItemContainer}>
+                            <li className={styles.userItemContainer} style={{ marginTop: 5 }}>
                                 <p>{el.title}</p>
                             </li>
                         </div>

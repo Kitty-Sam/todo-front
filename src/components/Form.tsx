@@ -27,7 +27,7 @@ export const Form: FC<IFormProps> = ({ item, setItem }) => {
 
     return (
         <div className={styles.inputContainer}>
-            <Input placeholder={'enter new item'} value={item} onChange={onChangeItemPress} />
+            <Input placeholder={'enter new item'} value={item} onChange={onChangeItemPress} type="text" />
             <div>
                 <button onClick={addDealPress} disabled={!item}>
                     add
